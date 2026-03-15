@@ -1,0 +1,188 @@
+/* =========================
+   GLOBAL LAYOUT
+========================= */
+body {
+    background-color: #e9ecef !important;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#layoutSidenav_content {
+    background-color: #e9ecef;
+}
+
+.container-fluid {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+}
+
+/* =========================
+   TOP NAVBAR
+========================= */
+.sb-topnav {
+    background: #0f766e !important;
+    height: 56px;
+    min-height: 56px;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.sb-topnav .navbar-brand {
+    color: #ffffff !important;
+    font-size: 18px;
+    font-weight: 500;
+    width: 220px;
+    padding-left: 18px;
+}
+
+.sb-topnav .nav-link,
+.sb-topnav .navbar-brand,
+.sb-topnav .topbar-bank-name,
+.sb-topnav .topbar-user-text {
+    color: #ffffff !important;
+}
+
+.topbar-bank-name {
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: auto;
+    margin-right: 24px;
+    white-space: nowrap;
+}
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.topbar-user i {
+    font-size: 16px;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sb-sidenav {
+    background: #1f2937 !important;
+}
+
+.sb-sidenav-menu {
+    padding-top: 0 !important;
+}
+
+.sidebar-profile {
+    background: #1c2831;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+}
+
+.sidebar-profile .profile-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e2a33;
+    font-size: 22px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.sidebar-profile-info {
+    line-height: 1.2;
+}
+
+.sidebar-profile-info .name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sidebar-profile-info .status {
+    color: #7CFC00;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.sb-sidenav-menu-heading {
+    color: #6f8593 !important;
+    font-size: 11px !important;
+    text-transform: uppercase;
+    padding: 14px 16px 8px 16px !important;
+    letter-spacing: 0.5px;
+}
+
+.sb-sidenav .nav-link {
+    color: #d6dde2 !important;
+    font-size: 15px;
+    padding: 14px 16px !important;
+    border-left: 3px solid transparent;
+}
+
+.sb-sidenav .nav-link .sb-nav-link-icon {
+    color: #d6dde2 !important;
+    min-width: 22px;
+}
+
+.sb-sidenav .nav-link:hover {
+    background: #273449 !important;
+    color: #ffffff !important;
+    border-left: 3px solid #0f766e;
+}
+
+.sb-sidenav .nav-link.active {
+    background: #273449 !important;
+    color: #ffffff !important;
+    border-left: 3px solid #0f766e;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 991px) {
+    .topbar-bank-name {
+        display: none;
+    }
+}
+
+/* =========================
+   TOPBAR USER DROPDOWN
+========================= */
+.topbar-user-dropdown {
+    min-width: 180px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+    padding: 8px 0;
+    margin-top: 10px;
+}
+
+.topbar-user-dropdown .dropdown-item {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+}
+
+.topbar-user-dropdown .dropdown-item:hover {
+    background: #f3f4f6;
+    color: #0f766e;
+}
+
+.topbar-user-dropdown .dropdown-divider {
+    margin: 6px 0;
+}
+
+.topbar-user-dropdown .text-danger:hover {
+    color: #dc2626 !important;
+    background: #fef2f2;
+}

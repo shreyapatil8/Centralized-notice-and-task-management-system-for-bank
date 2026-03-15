@@ -1,0 +1,526 @@
+/* =========================
+   CIRCULAR LISTING PAGE
+========================= */
+.circular-ref-page {
+    background: #dfe3e8;
+    min-height: 100%;
+    padding: 12px 8px 24px 8px;
+}
+
+.circular-ref-panel {
+    background: #f7f7f7;
+    border: 1px solid #d8d8d8;
+    border-top: 3px solid #e25c4a;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.circular-ref-panel-body {
+    padding: 14px 14px 18px 14px;
+}
+
+.circular-ref-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.circular-ref-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2f3b46;
+    margin: 0;
+}
+
+.circular-ref-search {
+    display: flex;
+    align-items: center;
+}
+
+.circular-ref-search input {
+    width: 220px;
+    min-height: 46px;
+    border: 1px solid #d4d8dd;
+    border-right: none;
+    border-radius: 2px 0 0 2px !important;
+    background: #fff;
+    box-shadow: none !important;
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+.circular-ref-search button {
+    width: 54px;
+    min-height: 46px;
+    border: 1px solid #d4d8dd;
+    background: #f3f4f6;
+    border-radius: 0 2px 2px 0;
+    color: #222;
+}
+
+.circular-ref-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.circular-ref-filter-row .dept-select {
+    width: 268px;
+    min-height: 44px;
+    border: 1px solid #d4d8dd;
+    border-radius: 2px !important;
+    background: #fff;
+    box-shadow: none !important;
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+.circular-ref-date-box {
+    width: 165px;
+    position: relative;
+}
+
+.circular-ref-date-box input {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #d4d8dd;
+    border-radius: 2px !important;
+    background: #fff;
+    box-shadow: none !important;
+    padding: 10px 40px 10px 12px;
+    font-size: 14px;
+}
+
+.circular-ref-date-box i {
+    position: absolute;
+    right: 12px;
+    top: 13px;
+    color: #4b5563;
+    pointer-events: none;
+}
+
+.circular-ref-icon-btn {
+    width: 54px;
+    min-height: 44px;
+    border: none;
+    border-radius: 3px;
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.circular-ref-search-btn {
+    background: #0ea44b;
+    color: #fff;
+}
+
+.circular-ref-search-btn:hover {
+    background: #0b8d40;
+    color: #fff;
+}
+
+.circular-ref-reset-btn {
+    background: #f0f1f3;
+    color: #374151;
+    border: 1px solid #d5d9df;
+}
+
+.circular-ref-reset-btn:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.circular-ref-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    background: #0ea44b;
+    color: #fff !important;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.circular-ref-add-btn:hover {
+    background: #0b8d40;
+    color: #fff !important;
+}
+
+.circular-ref-add-btn i {
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+.circular-ref-table-wrap {
+    background: #fff;
+}
+
+.table-circular-ref {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+}
+
+.table-circular-ref thead th {
+    background: #ececec;
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 12px;
+    border: none !important;
+    vertical-align: top;
+}
+
+.table-circular-ref tbody td {
+    background: #f7f7f7;
+    padding: 14px 12px;
+    border-top: 1px solid #e8e8e8 !important;
+    vertical-align: top;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.table-circular-ref tbody tr:nth-child(even) td {
+    background: #f3f3f3;
+}
+
+.circular-ref-title-text {
+    font-size: 18px;
+    line-height: 1.35;
+    color: #30343b;
+}
+
+.circular-ref-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.circular-ref-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 92px;
+    background: #20b7df;
+    color: #fff !important;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 14px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.circular-ref-edit:hover {
+    background: #16a4ca;
+    color: #fff !important;
+}
+
+.circular-ref-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 92px;
+    background: #ea533a;
+    color: #fff !important;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 14px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.circular-ref-delete:hover {
+    background: #d6452d;
+    color: #fff !important;
+}
+
+.circular-ref-empty {
+    text-align: center;
+    padding: 24px 12px;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+/* =========================
+   ADD CIRCULAR PAGE
+========================= */
+.add-circular-page {
+    background: #dfe3e8;
+    min-height: 100%;
+    padding: 12px 8px 24px 8px;
+}
+
+.add-circular-panel {
+    background: #f7f7f7;
+    border: 1px solid #d8d8d8;
+    border-top: 3px solid #2db7e5;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.add-circular-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #2f3b46;
+    margin: 0;
+    padding: 12px 14px 10px 14px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f7f7f7;
+}
+
+.add-circular-body {
+    padding: 18px 18px 14px 18px;
+}
+
+.add-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2f3b46;
+    margin-bottom: 8px;
+}
+
+.add-label .req {
+    color: #c0392b;
+}
+
+.add-circular-form .form-control,
+.add-circular-form .form-select {
+    min-height: 46px;
+    border: 1px solid #d4d8dd;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    font-size: 14px;
+    padding: 10px 12px;
+    background: #fff;
+}
+
+.add-circular-form textarea.form-control {
+    min-height: 72px;
+    resize: vertical;
+}
+
+.add-circular-form .form-control:focus,
+.add-circular-form .form-select:focus {
+    border-color: #8dc8df !important;
+    box-shadow: none !important;
+}
+
+.upload-doc-box {
+    border: 1px dashed #bfc5cb;
+    background: #fafafa;
+    min-height: 250px;
+    padding: 20px 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.upload-doc-icon {
+    font-size: 60px;
+    color: #333;
+    margin-bottom: 14px;
+}
+
+.upload-doc-text {
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 14px;
+}
+
+.upload-doc-box .form-control {
+    margin-bottom: 10px;
+}
+
+.upload-btn-ref {
+    display: inline-block;
+    background: #19b5e5;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+}
+
+.upload-btn-ref:hover {
+    background: #11a1cc;
+    color: #fff !important;
+}
+
+.save-btn-ref {
+    background: #11a847;
+    color: #fff !important;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.save-btn-ref:hover {
+    background: #0d913d;
+    color: #fff !important;
+}
+
+.save-btn-ref i {
+    margin-right: 6px;
+}
+
+/* =========================
+   EDIT CIRCULAR PAGE
+========================= */
+.edit-circular-page {
+    background: #dfe3e8;
+    min-height: 100%;
+    padding: 12px 8px 24px 8px;
+}
+
+.edit-circular-panel {
+    background: #f7f7f7;
+    border: 1px solid #d8d8d8;
+    border-top: 3px solid #2db7e5;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.edit-circular-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #2f3b46;
+    margin: 0;
+    padding: 12px 14px 10px 14px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f7f7f7;
+}
+
+.edit-circular-body {
+    padding: 18px 18px 14px 18px;
+}
+
+.edit-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2f3b46;
+    margin-bottom: 8px;
+}
+
+.edit-label .req {
+    color: #c0392b;
+}
+
+.edit-circular-form .form-control,
+.edit-circular-form .form-select {
+    min-height: 46px;
+    border: 1px solid #d4d8dd;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    font-size: 14px;
+    padding: 10px 12px;
+    background: #fff;
+}
+
+.edit-circular-form textarea.form-control {
+    min-height: 72px;
+    resize: vertical;
+}
+
+.doc-action-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.doc-btn-view {
+    display: inline-block;
+    background: #f2a51a;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 3px;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.doc-btn-view:hover {
+    background: #dc940f;
+    color: #fff !important;
+}
+
+.doc-btn-remove {
+    display: inline-block;
+    background: #e5533d;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 3px;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+}
+
+.doc-btn-remove:hover {
+    background: #cb402c;
+    color: #fff !important;
+}
+
+.pdf-preview-box {
+    background: #3b3b3b;
+    border: 1px solid #9aa0a6;
+    height: 340px;
+    overflow: hidden;
+}
+
+.pdf-preview-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1100px) {
+    .circular-ref-title-row,
+    .circular-ref-filter-row {
+        align-items: stretch;
+    }
+
+    .circular-ref-search input,
+    .circular-ref-filter-row .dept-select,
+    .circular-ref-date-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 991px) {
+    .upload-doc-box {
+        min-height: 200px;
+        margin-top: 10px;
+    }
+
+    .pdf-preview-box {
+        height: 260px;
+        margin-top: 10px;
+    }
+}

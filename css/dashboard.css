@@ -1,0 +1,117 @@
+/* =========================
+   DASHBOARD
+========================= */
+.page-title-row {
+    margin-top: 14px;
+    margin-bottom: 10px;
+}
+
+.page-title-row h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #6c757d;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.summary-strip {
+    background: #d6b182;
+    color: #ffffff;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 9px 12px;
+    border-radius: 3px 3px 0 0;
+    margin-top: 10px;
+}
+
+.summary-wrapper {
+    background: #f8f9fa;
+    border: 1px solid #cfd8dc;
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.stat-box {
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #ffffff;
+    margin-bottom: 12px;
+}
+
+.stat-box .stat-head {
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 6px;
+}
+
+.stat-box .stat-body {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 500;
+    padding: 10px 6px;
+    background: #ffffff;
+    color: #333;
+    min-height: 48px;
+}
+
+.bg-redish { background: #c85d5d; }
+.bg-blueish { background: #2f97bf; }
+.bg-greenish { background: #08a84f; }
+.bg-orangeish { background: #f1550a; }
+.bg-lightgreenish { background: #8cc04b; }
+
+.quick-box {
+    border: 1px solid #7fb8c9;
+    background: #ffffff;
+    margin-top: 6px;
+}
+
+.quick-box-header {
+    background: #2f97bf;
+    color: #ffffff;
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quick-box-body {
+    min-height: 95px;
+    padding: 12px 10px 20px 10px;
+    background: #f6f7f8;
+}
+
+.shortcut-btn {
+    display: inline-block;
+    background: #17b5e4;
+    color: #ffffff !important;
+    text-decoration: none;
+    min-width: 135px;
+    text-align: center;
+    padding: 16px 10px;
+    border-radius: 2px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.shortcut-btn i {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.breadcrumb {
+    margin-bottom: 10px !important;
+}
