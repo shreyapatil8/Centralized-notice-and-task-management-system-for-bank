@@ -1,0 +1,196 @@
+/* =========================
+   NEWS MODULE
+========================= */
+.news-page {
+    background: #dfe3e8;
+    min-height: 100%;
+    padding: 12px 8px 24px 8px;
+}
+
+.news-panel {
+    background: #f7f7f7;
+    border: 1px solid #d8d8d8;
+    border-top: 3px solid #2db7e5;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.news-panel-body {
+    padding: 14px;
+}
+
+.news-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.news-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #2f3b46;
+    margin: 0;
+}
+
+.news-add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    background: #16a34a;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.news-add-btn:hover {
+    background: #12853d;
+    color: #fff !important;
+}
+
+.news-table-wrap {
+    background: #fff;
+}
+
+.table-news-ref {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+}
+
+.table-news-ref thead th {
+    background: #ececec;
+    color: #1f2937;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 12px;
+    border: none !important;
+}
+
+.table-news-ref tbody td {
+    background: #f7f7f7;
+    padding: 14px 12px;
+    border-top: 1px solid #e8e8e8 !important;
+    vertical-align: top;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.table-news-ref tbody tr:nth-child(even) td {
+    background: #f3f3f3;
+}
+
+.news-thumb {
+    width: 130px;
+    height: 90px;
+    object-fit: cover;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+}
+
+.news-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.news-edit-btn,
+.news-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 92px;
+    border-radius: 3px;
+    padding: 8px 14px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    border: none;
+}
+
+.news-edit-btn {
+    background: #20b7df;
+    color: #fff !important;
+}
+
+.news-edit-btn:hover {
+    background: #16a4ca;
+    color: #fff !important;
+}
+
+.news-delete-btn {
+    background: #ea533a;
+    color: #fff !important;
+}
+
+.news-delete-btn:hover {
+    background: #d6452d;
+    color: #fff !important;
+}
+
+.news-form-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2f3b46;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.news-form-label .req {
+    color: #c0392b;
+}
+
+.news-panel .form-control,
+.news-panel textarea.form-control {
+    min-height: 46px;
+    border: 1px solid #d4d8dd;
+    border-radius: 2px !important;
+    box-shadow: none !important;
+    font-size: 14px;
+    padding: 10px 12px;
+    background: #fff;
+}
+
+.news-panel textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.news-save-btn {
+    background: #11a847;
+    color: #fff !important;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.news-save-btn:hover {
+    background: #0d913d;
+    color: #fff !important;
+}
+
+.news-preview-img {
+    width: 220px;
+    max-width: 100%;
+    border: 1px solid #d7d7d7;
+    padding: 4px;
+    background: #fff;
+}
+
+.news-empty {
+    text-align: center;
+    padding: 24px 12px;
+    color: #6b7280;
+    font-size: 15px;
+}

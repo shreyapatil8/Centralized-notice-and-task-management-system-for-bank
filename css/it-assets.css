@@ -1,0 +1,101 @@
+/* =========================
+   IT ASSETS DASHBOARD
+========================= */
+.it-assets-page {
+    background: #dfe3e8;
+    min-height: 100%;
+    padding: 12px 8px 24px 8px;
+}
+
+.it-assets-panel {
+    background: #eef1f4;
+    border: 1px solid #d8d8d8;
+    border-top: 3px solid #cfd8dc;
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 26px 24px 28px;
+}
+
+.it-assets-title {
+    text-align: center;
+    font-size: 74px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #43594a;
+    margin: 6px 0 28px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.18);
+    font-family: "Trebuchet MS", Arial, sans-serif;
+}
+
+.it-assets-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* FIXED 6 columns */
+    gap: 22px 26px;
+}
+
+.asset-card {
+    background: transparent;
+    text-align: center;
+}
+
+.asset-card-top {
+    background: #6f6fb8;
+    min-height: 98px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.asset-card-top.teal {
+    background: #2fb8b5;
+}
+
+.asset-card-icon {
+    font-size: 56px;
+    line-height: 1;
+    color: #fff;
+}
+
+.asset-card-icon.dark {
+    color: #111;
+}
+
+.asset-card-middle {
+    background: #b5c7e1;
+    color: #2d2d2d;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    padding: 8px 10px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-card-bottom {
+    background: #6f6fb8;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 8px 10px;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-card-bottom.teal {
+    background: #2fb8b5;
+    color: #111;
+}
+
+.asset-card-middle.multiline {
+    line-height: 1.35;
+    letter-spacing: 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+

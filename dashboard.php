@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('./includes/auth-admin.php');
 include_once('./includes/config.php');
 
 if (!isset($_SESSION['adminid']) || strlen($_SESSION['adminid']) == 0) {
@@ -38,7 +39,7 @@ if ($employeeResult) {
 }
 
 /* Recent data */
-$recentNews = mysqli_query($con, "SELECT id, title, publish_date FROM news WHERE is_active=1 ORDER BY id DESC LIMIT 5");
+$recentNews = mysqli_query($con, "SELECT id, summary, created_at FROM news WHERE is_active=1 ORDER BY id DESC LIMIT 5");
 $recentCirculars = mysqli_query($con, "SELECT id, title, circular_no, publish_date FROM circulars WHERE is_active=1 ORDER BY id DESC LIMIT 5");
 $recentNotices = mysqli_query($con, "SELECT id, title, priority, publish_date FROM notices WHERE is_active=1 ORDER BY id DESC LIMIT 5");
 ?>
@@ -66,10 +67,6 @@ $recentNotices = mysqli_query($con, "SELECT id, title, priority, publish_date FR
             <main>
                 <div class="container-fluid px-4">
                     <div class="container-fluid">
-                        <div class="page-title-row">
-                            <h1>Dashboard</h1>
-                            <div class="page-subtitle">Bank portal administration panel</div>
-                        </div>
 
                         <div class="summary-strip">QR Code Process Summary</div>
                         <div class="summary-wrapper">
@@ -117,7 +114,7 @@ $recentNotices = mysqli_query($con, "SELECT id, title, priority, publish_date FR
                                 <span><i class="fas fa-plus"></i> Add</span>
                             </div>
                             <div class="quick-box-body">
-                                <a href=" https://share.google/v0sGI322DcU2pWU9D" target="_blank" class="shortcut-btn">
+                                <a href="web-main.php"  class="shortcut-btn">
                                     <i class="fas fa-globe"></i>
                                     View Portal
                                 </a>

@@ -1,22 +1,47 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Kolkata');
 include_once('./includes/config.php');
+mysqli_set_charset($con, "utf8mb4");
 
-// Code for login
+$error = '';
+
 if (isset($_POST['login'])) {
-    $adminusername = $_POST['username'];
-    $pass = md5($_POST['password']);
+    $username = trim($_POST['username']);
+    $password = md5(trim($_POST['password']));
 
-    $ret = mysqli_query($con, "SELECT * FROM admin WHERE username='$adminusername' and password='$pass'");
-    $num = mysqli_fetch_array($ret);
-
-    if ($num > 0) {
-        $_SESSION['login'] = $_POST['username'];
-        $_SESSION['adminid'] = $num['id'];
-        echo "<script>window.location.href='dashboard.php'</script>";
-        exit();
+    if ($username === '' || trim($_POST['password']) === '') {
+        $error = "Please enter username and password.";
     } else {
-        echo "<script>alert('Invalid username or password');</script>";
+        $stmt = mysqli_prepare($con, "SELECT id, username, role, branch_name FROM users WHERE username=? AND password=? AND is_active=1 LIMIT 1");
+        mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($stmt);
+
+        if ($user) {
+            $role = trim(strtolower($user['role']));
+
+            $_SESSION['userid'] = $user['id'];
+            $_SESSION['login'] = $user['username'];
+            $_SESSION['role'] = $role;
+            $_SESSION['branch_name'] = $user['branch_name'];
+
+            if ($role === 'admin') {
+                $_SESSION['adminid'] = $user['id'];
+                header("Location: dashboard.php");
+                exit();
+            } elseif ($role === 'employee') {
+                unset($_SESSION['adminid']);
+                header("Location: web-main.php");
+                exit();
+            } else {
+                $error = "Invalid role assigned to this user: " . htmlspecialchars($user['role']);
+            }
+        } else {
+            $error = "Invalid username or password.";
+        }
     }
 }
 ?>
@@ -24,14 +49,15 @@ if (isset($_POST['login'])) {
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>MPSC Internal Portal Login</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@600;700&display=swap" rel="stylesheet">
     <link href="./css/styles.css" rel="stylesheet" />
     <link href="./css/custom.css" rel="stylesheet" />
-    <link href="./css/login.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="./css/login.css?v=2" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 
@@ -52,9 +78,9 @@ if (isset($_POST['login'])) {
         </div>
 
         <div class="portal-menu-bar">
-            <a href="#" class="active">होम</a>
-            <a href=" https://share.google/v0sGI322DcU2pWU9D" target="_blank">वेबसाईट</a>
-            <a href="#">ई-मेल</a>
+            <a href="web-main.php" class="active">होम</a>
+            <a href="#" target="_blank">वेबसाईट</a>
+            <a href="https://webmail.rediffmailpro.com/action/login/sanglidccb.bank.in" target="_blank">ई-मेल</a>
             <a href="#">संपर्क</a>
         </div>
 
@@ -64,15 +90,12 @@ if (isset($_POST['login'])) {
                     <div class="portal-slide active">
                         <img src="./assets/slider/slider1.avif" alt="Slide 1">
                     </div>
-
                     <div class="portal-slide">
                         <img src="./assets/slider/slider2.jpg" alt="Slide 2">
                     </div>
-
                     <div class="portal-slide">
                         <img src="./assets/slider/slider3.jpg" alt="Slide 3">
                     </div>
-
                     <div class="portal-slide">
                         <img src="./assets/slider/slider4.jpg" alt="Slide 4">
                     </div>
@@ -81,6 +104,10 @@ if (isset($_POST['login'])) {
                 <div class="portal-login-panel">
                     <div class="portal-login-card-title">Sign In</div>
                     <div class="portal-login-divider"></div>
+
+                    <?php if (!empty($error)) { ?>
+                        <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                    <?php } ?>
 
                     <form method="post">
                         <label>Username</label>
@@ -104,19 +131,17 @@ if (isset($_POST['login'])) {
         </div>
 
         <div class="portal-footer">
-            <div>कॉपीराइट २०२६ © MPSC Co-operative Bank Ltd. सर्व हक्क राखीव.</div>
-            <div>Design and Developed By: </div>
+            <div>कॉपीराइट २०२६ © मामासाहेब पवार सत्यविजय सहकारी बँक लि., कुंडल. सर्व हक्क राखीव.</div>
+            <div>Design and Developed By: IT Department</div>
         </div>
     </div>
 
     <script>
-        // Show / hide password
         document.getElementById('showPasswordCheck').addEventListener('change', function() {
             const passwordField = document.getElementById('passwordField');
             passwordField.type = this.checked ? 'text' : 'password';
         });
 
-        // Auto slideshow every 3 seconds
         const slides = document.querySelectorAll('.portal-slide');
         let currentSlide = 0;
 

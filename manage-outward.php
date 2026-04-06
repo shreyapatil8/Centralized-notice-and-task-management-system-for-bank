@@ -8,31 +8,29 @@ if (!isset($_SESSION['adminid']) || strlen($_SESSION['adminid']) == 0) {
     exit();
 }
 
-$message = '';
-
 if (isset($_GET['del']) && is_numeric($_GET['del'])) {
     $id = (int)$_GET['del'];
 
-    $stmt = mysqli_prepare($con, "DELETE FROM inwards WHERE id=?");
+    $stmt = mysqli_prepare($con, "DELETE FROM outwards WHERE id=?");
     mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
-    header("Location: manage-inward.php");
+    header("Location: manage-outward.php");
     exit();
 }
 
-$query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
+$query = mysqli_query($con, "SELECT * FROM outwards ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Manage Inward | MPSC Internal Portal</title>
+    <title>Manage Outward | MPSC Internal Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="./css/styles.css" rel="stylesheet" />
     <link href="./css/custom.css" rel="stylesheet" />
-    <link href="./css/inward.css" rel="stylesheet" />
+    <link href="./css/outward.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -44,27 +42,27 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-3">
-                <div class="inward-page">
+                <div class="outward-page">
 
-                    <div class="inward-panel">
-                        <div class="inward-panel-body">
+                    <div class="outward-panel">
+                        <div class="outward-panel-body">
 
-                            <div class="inward-top-row">
-                                <h2 class="inward-title">Inward Listing</h2>
-                                <a href="add-inward.php" class="inward-add-btn">Add</a>
+                            <div class="outward-top-row">
+                                <h2 class="outward-title">Outward Listing</h2>
+                                <a href="add-outward.php" class="outward-add-btn">Add</a>
                             </div>
 
-                            <div class="inward-table-wrap">
+                            <div class="outward-table-wrap">
                                 <div class="table-responsive">
-                                    <table class="table-inward-ref">
+                                    <table class="table-outward-ref">
                                         <thead>
                                             <tr>
                                                 <th>Idinward<br>Outward</th>
-                                                <th>Inward<br>No</th>
-                                                <th>Inward Entry Date</th>
-                                                <th>Inward Title</th>
-                                                <th>Inward Entry<br>By</th>
-                                                <th>Inward Date</th>
+                                                <th>Outward<br>No</th>
+                                                <th>Outward Entry Date</th>
+                                                <th>Outward Title</th>
+                                                <th>Outward Entry<br>By</th>
+                                                <th>Outward Date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -73,31 +71,25 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
                                                 <?php while ($row = mysqli_fetch_assoc($query)) { ?>
                                                     <tr>
                                                         <td><?php echo (int)$row['id']; ?></td>
-
-                                                        <td><?php echo htmlspecialchars($row['inward_no']); ?></td>
-
+                                                        <td><?php echo htmlspecialchars($row['outward_no']); ?></td>
                                                         <td>
                                                             <?php echo date('Y-m-d', strtotime($row['entry_date'])); ?><br>
                                                             <?php echo date('H:i:s', strtotime($row['entry_date'])); ?>
                                                         </td>
-
-                                                        <td><?php echo htmlspecialchars($row['details']); ?></td>
-
-                                                        <td><?php echo htmlspecialchars($row['inward_from']); ?></td>
-
+                                                        <td><?php echo htmlspecialchars($row['outward_title']); ?></td>
+                                                        <td><?php echo htmlspecialchars($row['entry_by']); ?></td>
                                                         <td>
-                                                            <?php echo date('Y-m-d', strtotime($row['letter_date'])); ?>
+                                                            <?php echo date('Y-m-d', strtotime($row['outward_date'])); ?><br>
+                                                            <?php echo date('H:i:s', strtotime($row['outward_date'])); ?>
                                                         </td>
-
                                                         <td>
-                                                            <div class="inward-actions">
-                                                                <a href="edit-inward.php?id=<?php echo (int)$row['id']; ?>" class="inward-edit-btn">
+                                                            <div class="outward-actions">
+                                                                <a href="edit-outward.php?id=<?php echo (int)$row['id']; ?>" class="outward-edit-btn">
                                                                     <i class="fas fa-pen"></i> Edit
                                                                 </a>
-
-                                                                <a href="manage-inward.php?del=<?php echo (int)$row['id']; ?>"
-                                                                   class="inward-delete-btn"
-                                                                   onclick="return confirm('Delete this inward entry?');">
+                                                                <a href="manage-outward.php?del=<?php echo (int)$row['id']; ?>"
+                                                                   class="outward-delete-btn"
+                                                                   onclick="return confirm('Delete this outward entry?');">
                                                                     <i class="fas fa-trash-alt"></i> Delete
                                                                 </a>
                                                             </div>
@@ -106,7 +98,7 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
                                                 <?php } ?>
                                             <?php } else { ?>
                                                 <tr>
-                                                    <td colspan="7" class="inward-empty">No inward entries found.</td>
+                                                    <td colspan="7" class="outward-empty">No outward entries found.</td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

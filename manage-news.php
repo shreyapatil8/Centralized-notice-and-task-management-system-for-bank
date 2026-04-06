@@ -8,31 +8,43 @@ if (!isset($_SESSION['adminid']) || strlen($_SESSION['adminid']) == 0) {
     exit();
 }
 
-$message = '';
-
 if (isset($_GET['del']) && is_numeric($_GET['del'])) {
     $id = (int)$_GET['del'];
 
-    $stmt = mysqli_prepare($con, "DELETE FROM inwards WHERE id=?");
+    $getStmt = mysqli_prepare($con, "SELECT image_name FROM news WHERE id=?");
+    mysqli_stmt_bind_param($getStmt, "i", $id);
+    mysqli_stmt_execute($getStmt);
+    $res = mysqli_stmt_get_result($getStmt);
+    $row = mysqli_fetch_assoc($res);
+    mysqli_stmt_close($getStmt);
+
+    if ($row && !empty($row['image_name'])) {
+        $imgPath = __DIR__ . '/uploads/news/' . $row['image_name'];
+        if (file_exists($imgPath)) {
+            unlink($imgPath);
+        }
+    }
+
+    $stmt = mysqli_prepare($con, "DELETE FROM news WHERE id=?");
     mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
-    header("Location: manage-inward.php");
+    header("Location: manage-news.php");
     exit();
 }
 
-$query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
+$query = mysqli_query($con, "SELECT * FROM news ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Manage Inward | MPSC Internal Portal</title>
+    <title>Manage News | MPSC Internal Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="./css/styles.css" rel="stylesheet" />
     <link href="./css/custom.css" rel="stylesheet" />
-    <link href="./css/inward.css" rel="stylesheet" />
+    <link href="./css/news.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -44,27 +56,24 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-3">
-                <div class="inward-page">
+                <div class="news-page">
+                    <div class="news-panel">
+                        <div class="news-panel-body">
 
-                    <div class="inward-panel">
-                        <div class="inward-panel-body">
-
-                            <div class="inward-top-row">
-                                <h2 class="inward-title">Inward Listing</h2>
-                                <a href="add-inward.php" class="inward-add-btn">Add</a>
+                            <div class="news-top-row">
+                                <h2 class="news-title">News Listing</h2>
+                                <a href="add-news.php" class="news-add-btn">Add News</a>
                             </div>
 
-                            <div class="inward-table-wrap">
+                            <div class="news-table-wrap">
                                 <div class="table-responsive">
-                                    <table class="table-inward-ref">
+                                    <table class="table-news-ref">
                                         <thead>
                                             <tr>
-                                                <th>Idinward<br>Outward</th>
-                                                <th>Inward<br>No</th>
-                                                <th>Inward Entry Date</th>
-                                                <th>Inward Title</th>
-                                                <th>Inward Entry<br>By</th>
-                                                <th>Inward Date</th>
+                                                <th>ID</th>
+                                                <th>Image</th>
+                                                <th>Summary</th>
+                                                <th>Created At</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -73,31 +82,17 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
                                                 <?php while ($row = mysqli_fetch_assoc($query)) { ?>
                                                     <tr>
                                                         <td><?php echo (int)$row['id']; ?></td>
-
-                                                        <td><?php echo htmlspecialchars($row['inward_no']); ?></td>
-
                                                         <td>
-                                                            <?php echo date('Y-m-d', strtotime($row['entry_date'])); ?><br>
-                                                            <?php echo date('H:i:s', strtotime($row['entry_date'])); ?>
+                                                            <img src="./uploads/news/<?php echo htmlspecialchars($row['image_name']); ?>" class="news-thumb" alt="News">
                                                         </td>
-
-                                                        <td><?php echo htmlspecialchars($row['details']); ?></td>
-
-                                                        <td><?php echo htmlspecialchars($row['inward_from']); ?></td>
-
+                                                        <td><?php echo nl2br(htmlspecialchars($row['summary'])); ?></td>
+                                                        <td><?php echo date('d-m-Y h:i A', strtotime($row['created_at'])); ?></td>
                                                         <td>
-                                                            <?php echo date('Y-m-d', strtotime($row['letter_date'])); ?>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="inward-actions">
-                                                                <a href="edit-inward.php?id=<?php echo (int)$row['id']; ?>" class="inward-edit-btn">
+                                                            <div class="news-actions">
+                                                                <a href="edit-news.php?id=<?php echo (int)$row['id']; ?>" class="news-edit-btn">
                                                                     <i class="fas fa-pen"></i> Edit
                                                                 </a>
-
-                                                                <a href="manage-inward.php?del=<?php echo (int)$row['id']; ?>"
-                                                                   class="inward-delete-btn"
-                                                                   onclick="return confirm('Delete this inward entry?');">
+                                                                <a href="manage-news.php?del=<?php echo (int)$row['id']; ?>" class="news-delete-btn" onclick="return confirm('Delete this news?');">
                                                                     <i class="fas fa-trash-alt"></i> Delete
                                                                 </a>
                                                             </div>
@@ -106,7 +101,7 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
                                                 <?php } ?>
                                             <?php } else { ?>
                                                 <tr>
-                                                    <td colspan="7" class="inward-empty">No inward entries found.</td>
+                                                    <td colspan="5" class="news-empty">No news available.</td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -116,7 +111,6 @@ $query = mysqli_query($con, "SELECT * FROM inwards ORDER BY id DESC");
 
                         </div>
                     </div>
-
                 </div>
             </div>
         </main>

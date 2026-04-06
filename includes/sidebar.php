@@ -29,46 +29,40 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     Upload Circular List
                 </a>
 
-                <a class="nav-link <?php echo ($current_page == 'index.php') ? 'active' : ''; ?>" href="https://share.google/v0sGI322DcU2pWU9D" target="_blank">
+                <a class="nav-link <?php echo in_array($current_page, ['manage-news.php', 'add-news.php', 'edit-news.php']) ? 'active' : ''; ?>" href="manage-news.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-newspaper"></i></div>
+                    News
+                </a>
+
+                <a class="nav-link" href="web-main.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>
                     View Portal
                 </a>
 
                 <a class="nav-link <?php echo ($current_page == 'inward.php') ? 'active' : ''; ?>" href="manage-inward.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
-                    Inword
+                    Inward
                 </a>
 
-                <a class="nav-link <?php echo ($current_page == 'outward.php') ? 'active' : ''; ?>" href="#">
+                <a class="nav-link <?php echo in_array($current_page, ['manage-outward.php', 'add-outward.php', 'edit-outward.php']) ? 'active' : ''; ?>" href="manage-outward.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                     Outward
                 </a>
 
-                <a class="nav-link <?php echo ($current_page == 'bdp-dashboard.php') ? 'active' : ''; ?>" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
-                    BDP Dashboard
+                <a class="nav-link <?php echo in_array($current_page, ['it-assets.php']) ? 'active' : ''; ?>" href="it-assets.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-desktop"></i></div>
+                    IT Assets
                 </a>
 
-                <a class="nav-link <?php echo ($current_page == 'fund-management.php') ? 'active' : ''; ?>" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-hand-holding-usd"></i></div>
-                    Fund Management
+                <a class="nav-link <?php echo in_array($current_page, ['manage-portal-blocks.php', 'edit-portal-block.php']) ? 'active' : ''; ?>" href="manage-portal-blocks.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-download"></i></div>
+                    Portal Downloads
                 </a>
 
-                <a class="nav-link <?php echo ($current_page == 'system-audit-dashboard.php') ? 'active' : ''; ?>" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-clipboard-check"></i></div>
-                    System Audit Dashboard
-                </a>
-
-                <a class="nav-link <?php echo ($current_page == 'reports.php') ? 'active' : ''; ?>" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                    Reports
-                </a>
-
-                <a class="nav-link <?php echo ($current_page == 'it-bdp-report.php') ? 'active' : ''; ?>" href="#">
-                    <div class="sb-nav-link-icon"><i class="fas fa-laptop-code"></i></div>
-                    IT BDP Report
+                <a class="nav-link <?php echo in_array($current_page, ['manage-policies.php', 'add-policy-file.php', 'edit-policy.php']) ? 'active' : ''; ?>" href="manage-policies.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-file-pdf"></i></div>
+                    Policies
                 </a>
             </div>
-        </div>
     </nav>
 </div>

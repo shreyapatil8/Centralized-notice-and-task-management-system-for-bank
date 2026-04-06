@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('./includes/auth-admin.php');
 include_once('./includes/config.php');
 
 if (!isset($_SESSION['adminid']) || strlen($_SESSION['adminid']) == 0) {
