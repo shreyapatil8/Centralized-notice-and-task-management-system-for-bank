@@ -77,7 +77,7 @@ function buildFilterLink($dept, $year) {
     </div>
 
     <div class="portal-menu-bar">
-        <a href="dashboard.php">होम</a>
+        <a href="manage-circulars.php">होम</a>
         <a href="#">वेबसाईट</a>
         <a href="#">एंट्री फॉर्म / रिपोर्ट</a>
         <a href="index.php" class="portal-menu-right">लॉग आउट</a>

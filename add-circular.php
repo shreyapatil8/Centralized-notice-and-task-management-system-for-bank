@@ -44,7 +44,9 @@ if (isset($_POST['submit'])) {
                 mysqli_stmt_bind_param($stmt, "sssssssi", $circular_no, $title, $department, $description, $newFileName, $originalFileName, $publish_date, $created_by);
 
                 if (mysqli_stmt_execute($stmt)) {
-                    $message = "Circular uploaded successfully.";
+                    mysqli_stmt_close($stmt);
+                    header('location:manage-circulars.php');
+                    exit();
                 } else {
                     $error = "Database error while saving circular.";
                 }

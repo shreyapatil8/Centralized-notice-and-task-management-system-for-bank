@@ -100,12 +100,16 @@ if (isset($_POST['submit'])) {
                         mysqli_stmt_close($fileStmt);
 
                         $message = "Circular updated successfully.";
+                        header('location:manage-circulars.php');
+                        exit();
                     } else {
                         $error = "File upload failed while replacing old document.";
                     }
                 }
             } else {
                 $message = "Circular updated successfully.";
+                header('location:manage-circulars.php');
+                exit();
             }
         } else {
             mysqli_stmt_close($stmt);

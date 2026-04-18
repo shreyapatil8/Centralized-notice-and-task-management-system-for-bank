@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ?>
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark">
-    <a class="navbar-brand" href="dashboard.php">MPSC</a>
+    <a class="navbar-brand" href="manage-circulars.php">MPSC</a>
 
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-2" id="sidebarToggle" href="#!">
         <i class="fas fa-bars"></i>

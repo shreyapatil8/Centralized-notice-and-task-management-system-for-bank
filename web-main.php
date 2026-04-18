@@ -50,7 +50,7 @@ $newsQuery = mysqli_query($con, "SELECT * FROM news WHERE is_active=1 ORDER BY i
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MPSC Bank Portal</title>
-    <link href="./css/portal.css" rel="stylesheet" />
+    <link href="./css/portal.css?v=10" rel="stylesheet" />
 </head>
 
 <body>
@@ -81,7 +81,8 @@ $newsQuery = mysqli_query($con, "SELECT * FROM news WHERE is_active=1 ORDER BY i
                     <?php } ?>
 
                     <?php if (!empty($cyberPolicyRow['file_name'])) { ?>
-                        <a href="./uploads/policies/<?php echo rawurlencode($cyberPolicyRow['file_name']); ?>">सायबर सिक्युरिटी धोरण</a>
+                        <a href="./uploads/policies/<?php echo rawurlencode($cyberPolicyRow['file_name']); ?>">सायबर
+                            सिक्युरिटी धोरण</a>
                     <?php } else { ?>
                         <a href="javascript:void(0);" class="disabled-link">सायबर सिक्युरिटी धोरण</a>
                     <?php } ?>
@@ -90,12 +91,14 @@ $newsQuery = mysqli_query($con, "SELECT * FROM news WHERE is_active=1 ORDER BY i
 
             <div class="portal-navbar">
                 <div class="menu-left">
-                    <a href="#" target="_blank">वेबसाईट</a>
-                    <a href="https://webmail.rediffmailpro.com/action/login/sanglidccb.bank.in" target="_blank">ई-मेल</a>
-                    <a href="<?php echo (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') ? 'dashboard.php' : 'entry-forms.php'; ?>">
+                    <a href="https://share.google/v0sGI322DcU2pWU9D" target="_blank">वेबसाईट</a>
+                    <!-- <a href="https://webmail.rediffmailpro.com/action/login/sanglidccb.bank.in"
+                        target="_blank">ई-मेल</a> -->
+                    <a
+                        href="<?php echo (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') ? 'manage-circulars.php' : 'entry-forms.php'; ?>">
                         एंट्री फॉर्म / रिपोर्ट
                     </a>
-                    <a href="#">संपर्क</a>
+                    <!-- <a href="#">संपर्क</a> -->
                 </div>
 
                 <div class="menu-right">
@@ -107,93 +110,114 @@ $newsQuery = mysqli_query($con, "SELECT * FROM news WHERE is_active=1 ORDER BY i
         <div class="portal-main">
             <div class="portal-home-grid">
 
-                <!-- LEFT COLUMN -->
-                <div class="portal-left-stack">
-
-                    <div class="portal-card">
-                        <div class="portal-card-header">
+                <!-- ═══ COLUMN 1 — CIRCULARS ═══ -->
+                <div class="portal-section-col">
+                    <div class="portal-section-card">
+                        <div class="portal-section-header section-header-circulars">
+                            <span class="section-header-icon">📋</span>
                             <span>नवीन परिपत्रक</span>
                             <span class="live-dot"></span>
                         </div>
 
-                        <div class="portal-card-body">
+                        <div class="portal-section-body portal-circular-body">
                             <ul class="circular-link-list">
                                 <?php if ($circularQuery && mysqli_num_rows($circularQuery) > 0) { ?>
-                                    <?php while ($row = mysqli_fetch_assoc($circularQuery)) { ?>
+                                    <?php $i = 1;
+                                    while ($row = mysqli_fetch_assoc($circularQuery)) { ?>
                                         <li>
-                                            <a href="./uploads/circulars/<?php echo rawurlencode($row['file_name']); ?>" target="_blank">
+                                            <span class="circular-num"><?php echo $i++; ?>.</span>
+                                            <a href="./uploads/circulars/<?php echo rawurlencode($row['file_name']); ?>"
+                                                target="_blank">
                                                 <?php echo htmlspecialchars($row['title']); ?>
                                             </a>
                                         </li>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <li>No circulars available.</li>
+                                    <li class="empty-msg">कोणतेही परिपत्रक उपलब्ध नाही.</li>
                                 <?php } ?>
                             </ul>
                         </div>
 
-                        <div class="portal-see-all">
-                            <a href="portal-circulars.php?dept=all&year=all">सर्व पहा..</a>
+                        <div class="portal-section-footer">
+                            <a href="portal-circulars.php?dept=all&year=all">सर्व पहा →</a>
                         </div>
                     </div>
-
-                    <?php if ($portalBlocksQuery && mysqli_num_rows($portalBlocksQuery) > 0) { ?>
-                        <?php while ($block = mysqli_fetch_assoc($portalBlocksQuery)) { ?>
-                            <div class="portal-side-link-card <?php echo htmlspecialchars($block['color_class']); ?>">
-                                <div class="portal-side-link-title">
-                                    <?php echo htmlspecialchars($block['block_title']); ?>
-                                </div>
-
-                                <?php if (!empty($block['file_name'])) { ?>
-                                    <a href="./uploads/portal-blocks/<?php echo rawurlencode($block['file_name']); ?>" download class="portal-click-link">
-                                        क्लिक करा..
-                                    </a>
-                                <?php } else { ?>
-                                    <a href="javascript:void(0);" class="portal-click-link">
-                                        क्लिक करा..
-                                    </a>
-                                <?php } ?>
-                            </div>
-                        <?php } ?>
-                    <?php } ?>
-
                 </div>
 
-                <!-- CENTER COLUMN -->
-                <div class="portal-news-column">
-                    <?php if ($newsQuery && mysqli_num_rows($newsQuery) > 0) { ?>
-                        <?php while ($news = mysqli_fetch_assoc($newsQuery)) { ?>
-                            <div class="portal-news-card">
+                <!-- ═══ COLUMN 2 — NEWS ═══ -->
+                <div class="portal-section-col">
+                    <div class="portal-section-card">
 
-                                <div class="portal-news-head">
-                                    <img src="./assets/logo.jpeg" alt="Logo" class="portal-news-mini-logo">
 
-                                    <div class="portal-news-head-text">
-                                        <div class="portal-news-title">News</div>
-                                        <div class="portal-news-time">
-                                            <?php echo htmlspecialchars(time_elapsed_string($news['created_at'])); ?>
-                                            <span class="portal-news-globe">🌍</span>
+                        <div class="portal-section-body portal-news-body">
+                            <?php if ($newsQuery && mysqli_num_rows($newsQuery) > 0) { ?>
+                                <?php while ($news = mysqli_fetch_assoc($newsQuery)) { ?>
+                                    <div class="portal-news-item">
+                                        <div class="portal-news-head">
+                                            <img src="./assets/logo.jpeg" alt="Logo" class="portal-news-mini-logo">
+                                            <div class="portal-news-head-text">
+                                                <div class="portal-news-title">News</div>
+                                                <div class="portal-news-time">
+                                                    <?php echo htmlspecialchars(time_elapsed_string($news['created_at'])); ?>
+                                                    <span class="portal-news-globe">🌍</span>
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <div class="portal-news-summary">
+                                            <?php echo nl2br(htmlspecialchars($news['summary'])); ?>
+                                        </div>
+
+                                        <?php if (!empty($news['image_name'])) { ?>
+                                            <div class="portal-news-image-wrap">
+                                                <img src="./uploads/news/<?php echo htmlspecialchars($news['image_name']); ?>"
+                                                    class="portal-news-image" alt="News">
+                                            </div>
+                                        <?php } ?>
                                     </div>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <div class="empty-msg" style="padding:40px 20px; text-align:center;">
+                                    सध्या कोणतीही बातमी उपलब्ध नाही.
                                 </div>
-
-                                <div class="portal-news-summary">
-                                    <?php echo nl2br(htmlspecialchars($news['summary'])); ?>
-                                </div>
-
-                                <div class="portal-news-image-wrap">
-                                    <img src="./uploads/news/<?php echo htmlspecialchars($news['image_name']); ?>" class="portal-news-image" alt="News">
-                                </div>
-
-                            </div>
-                        <?php } ?>
-                    <?php } else { ?>
-                        <div class="portal-placeholder"></div>
-                    <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- RIGHT COLUMN -->
-                <div class="portal-placeholder"></div>
+                <!-- ═══ COLUMN 3 — PORTAL BLOCKS / QUICK LINKS ═══ -->
+                <div class="portal-section-col">
+                    <div class="portal-section-card">
+
+
+                        <div class="portal-section-body portal-blocks-body">
+                            <?php if ($portalBlocksQuery && mysqli_num_rows($portalBlocksQuery) > 0) { ?>
+                                <?php while ($block = mysqli_fetch_assoc($portalBlocksQuery)) { ?>
+                                    <div class="portal-block-card <?php echo htmlspecialchars($block['color_class']); ?>">
+                                        <div class="portal-side-link-title">
+                                            <?php echo htmlspecialchars($block['block_title']); ?>
+                                        </div>
+
+                                        <?php if (!empty($block['file_name'])) { ?>
+                                            <a href="./uploads/portal-blocks/<?php echo rawurlencode($block['file_name']); ?>"
+                                                download class="portal-click-link">
+                                                क्लिक करा..
+                                            </a>
+                                        <?php } else { ?>
+                                            <a href="javascript:void(0);" class="portal-click-link">
+                                                क्लिक करा..
+                                            </a>
+                                        <?php } ?>
+                                    </div>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <div class="empty-msg" style="padding:40px 20px; text-align:center;">
+                                    कोणतेही ब्लॉक उपलब्ध नाहीत.
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>

@@ -131,7 +131,7 @@ if (strlen($_SESSION['adminid']==0)) {
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Photo Event Add</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="manage-circulars.php">Dashboard</a></li>
                             <li class="breadcrumb-item active">Photo Event Add</li>
                         </ol>
                         

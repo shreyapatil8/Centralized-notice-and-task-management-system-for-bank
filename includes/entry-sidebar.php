@@ -4,7 +4,7 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
 
-                <a class="nav-link" href="javascript:void(0);">
+                <a class="nav-link" href="fixed-assets.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                     Fixed Assets
                 </a>
@@ -16,6 +16,8 @@
                 </a>
                 <div class="collapse" id="collapseFixedAssetMenu" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="fixed-assets.php">Fixed Assets Dashboard</a>
+                        <a class="nav-link" href="add-fixed-asset.php">Add Fixed Asset</a>
                         <a class="nav-link" href="#">Scrap Transfer To TDO</a>
                         <a class="nav-link" href="#">Fixed Asset Transfer Entry</a>
                         <a class="nav-link" href="#">Direct Scrap Transfer To HO</a>
@@ -29,8 +31,10 @@
                 </a>
                 <div class="collapse" id="collapseItAssetMenu" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="#">IT Asset Transfer</a>
-                        <a class="nav-link" href="#">IT Assets Transfer Report</a>
+                        <a class="nav-link" href="manage-it-assets.php">IT Assets Dashboard</a>
+                        <a class="nav-link" href="add-it-asset.php">Add IT Asset</a>
+                        <a class="nav-link" href="it-asset-transfer.php">IT Asset Transfer</a>
+                        <a class="nav-link" href="it-asset-transfer-report.php">IT Assets Transfer Report</a>
                     </nav>
                 </div>
 

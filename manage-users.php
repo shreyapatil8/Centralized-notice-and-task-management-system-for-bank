@@ -37,7 +37,7 @@ echo "<script>alert('Data deleted');</script>";
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Manage users</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="manage-circulars.php">Dashboard</a></li>
                             <li class="breadcrumb-item active">Manage users</li>
                         </ol>
             

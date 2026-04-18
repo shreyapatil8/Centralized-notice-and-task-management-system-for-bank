@@ -17,7 +17,7 @@ mysqli_set_charset($con, "utf8mb4");
 <body class="sb-nav-fixed">
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background:#099c78;">
-    <a class="navbar-brand ps-3" href="entry-forms.php">SDCC</a>
+    <a class="navbar-brand ps-3" href="entry-forms.php">MPSC</a>
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
     </button>

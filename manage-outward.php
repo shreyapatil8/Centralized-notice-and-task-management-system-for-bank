@@ -8,10 +8,11 @@ if (!isset($_SESSION['adminid']) || strlen($_SESSION['adminid']) == 0) {
     exit();
 }
 
+// Soft delete
 if (isset($_GET['del']) && is_numeric($_GET['del'])) {
     $id = (int)$_GET['del'];
 
-    $stmt = mysqli_prepare($con, "DELETE FROM outwards WHERE id=?");
+    $stmt = mysqli_prepare($con, "UPDATE outwards SET is_active = 0 WHERE id = ?");
     mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
@@ -20,7 +21,8 @@ if (isset($_GET['del']) && is_numeric($_GET['del'])) {
     exit();
 }
 
-$query = mysqli_query($con, "SELECT * FROM outwards ORDER BY id DESC");
+// Fetch only active entries
+$query = mysqli_query($con, "SELECT * FROM outwards WHERE is_active = 1 ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,7 +59,7 @@ $query = mysqli_query($con, "SELECT * FROM outwards ORDER BY id DESC");
                                     <table class="table-outward-ref">
                                         <thead>
                                             <tr>
-                                                <th>Idinward<br>Outward</th>
+                                                <th>Sr.<br>No</th>
                                                 <th>Outward<br>No</th>
                                                 <th>Outward Entry Date</th>
                                                 <th>Outward Title</th>
@@ -68,19 +70,18 @@ $query = mysqli_query($con, "SELECT * FROM outwards ORDER BY id DESC");
                                         </thead>
                                         <tbody>
                                             <?php if ($query && mysqli_num_rows($query) > 0) { ?>
+                                                <?php $sr = 1; ?>
                                                 <?php while ($row = mysqli_fetch_assoc($query)) { ?>
                                                     <tr>
-                                                        <td><?php echo (int)$row['id']; ?></td>
+                                                        <td><?php echo $sr++; ?></td>
                                                         <td><?php echo htmlspecialchars($row['outward_no']); ?></td>
                                                         <td>
-                                                            <?php echo date('Y-m-d', strtotime($row['entry_date'])); ?><br>
-                                                            <?php echo date('H:i:s', strtotime($row['entry_date'])); ?>
+                                                            <?php echo date('Y-m-d H:i:s', strtotime($row['entry_date'])); ?>
                                                         </td>
                                                         <td><?php echo htmlspecialchars($row['outward_title']); ?></td>
                                                         <td><?php echo htmlspecialchars($row['entry_by']); ?></td>
                                                         <td>
-                                                            <?php echo date('Y-m-d', strtotime($row['outward_date'])); ?><br>
-                                                            <?php echo date('H:i:s', strtotime($row['outward_date'])); ?>
+                                                            <?php echo date('Y-m-d', strtotime($row['outward_date'])); ?>
                                                         </td>
                                                         <td>
                                                             <div class="outward-actions">
