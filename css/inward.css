@@ -202,3 +202,39 @@
     border-color: #0f766e !important;
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1) !important;
 }
+
+.inward-form-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 6px;
+    display: block;
+    letter-spacing: 0.2px;
+}
+
+.inward-form-label .req {
+    color: #dc2626;
+    margin-right: 2px;
+}
+
+.inward-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: #fff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.inward-save-btn:hover {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%);
+    color: #fff !important;
+    transform: translateY(-1px);
+}

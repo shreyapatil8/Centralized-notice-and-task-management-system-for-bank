@@ -13,7 +13,6 @@ $cyberPolicyRow = mysqli_fetch_assoc(mysqli_query(
     "SELECT file_name FROM portal_policies WHERE policy_key='cyber_security'"
 ));
 $portalBlocksQuery = mysqli_query($con, "SELECT * FROM portal_blocks WHERE is_active=1 ORDER BY display_order ASC, id ASC");
-mysqli_set_charset($con, "utf8mb4");
 
 function time_elapsed_string($datetime)
 {
@@ -70,7 +69,7 @@ $newsQuery = mysqli_query($con, "SELECT * FROM news WHERE is_active=1 ORDER BY i
         </div>
 
         <div class="portal-menu-bar">
-            <a href="dashboard.php" class="active">होम</a>
+            <a href="manage-circulars.php" class="active">होम</a>
             <div class="portal-dropdown">
                 <a href="javascript:void(0);">धोरण</a>
                 <div class="portal-dropdown-menu">
@@ -204,9 +203,9 @@ $newsQuery = mysqli_query($con, "SELECT * FROM news WHERE is_active=1 ORDER BY i
                                                 क्लिक करा..
                                             </a>
                                         <?php } else { ?>
-                                            <a href="javascript:void(0);" class="portal-click-link">
-                                                क्लिक करा..
-                                            </a>
+                                            <span class="portal-click-link portal-click-disabled">
+                                                फाइल उपलब्ध नाही
+                                            </span>
                                         <?php } ?>
                                     </div>
                                 <?php } ?>

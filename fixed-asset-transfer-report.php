@@ -1,8 +1,8 @@
 <?php
 /**
- * IT Asset Transfer Report
+ * Fixed Asset Transfer Report
  * Shows all approved transfers (final transferred assets)
- * Employee: auto-filtered by their branch (to_branch)
+ * Employee: auto-filtered by their branch
  * Admin: view all OR filter by branch dropdown
  */
 
@@ -17,12 +17,6 @@ if (!isset($_SESSION['userid']) || !isset($_SESSION['role'])) {
 }
 
 include_once('./includes/config.php');
-
-// ─── Ensure approved_at column exists in it_asset_transfers ───
-$colCheck = mysqli_query($con, "SHOW COLUMNS FROM `it_asset_transfers` LIKE 'approved_at'");
-if ($colCheck && mysqli_num_rows($colCheck) === 0) {
-    mysqli_query($con, "ALTER TABLE `it_asset_transfers` ADD COLUMN `approved_at` DATETIME DEFAULT NULL AFTER `transfer_status`");
-}
 
 $role = trim(strtolower($_SESSION['role']));
 $isAdmin = ($role === 'admin');
@@ -39,14 +33,12 @@ $branches = [
 $filterBranch = '';
 
 if ($isEmployee) {
-    // Employee always sees only their branch
     if (!isset($_SESSION['branch_name']) || empty($_SESSION['branch_name'])) {
         header('location:index.php');
         exit();
     }
     $filterBranch = $_SESSION['branch_name'];
 } elseif ($isAdmin) {
-    // Admin can optionally filter by branch
     if (isset($_GET['branch']) && !empty(trim($_GET['branch']))) {
         $filterBranch = trim($_GET['branch']);
     }
@@ -57,10 +49,9 @@ $reportList = null;
 $totalCount = 0;
 
 if ($isEmployee) {
-    // Employee: show approved transfers where their branch is sender OR receiver
     $stmt = mysqli_prepare($con,
-        "SELECT id, asset_id, from_branch, to_branch, category, product, label_name, transfer_status, created_at, approved_at
-         FROM it_asset_transfers
+        "SELECT id, asset_id, from_branch, to_branch, category, product, company, label, amount, transfer_status, created_at, approved_at
+         FROM fixed_asset_transfers
          WHERE (from_branch = ? OR to_branch = ?) AND transfer_status = 'Approved'
          ORDER BY approved_at DESC, id DESC"
     );
@@ -69,10 +60,9 @@ if ($isEmployee) {
     $reportList = mysqli_stmt_get_result($stmt);
     $totalCount = ($reportList) ? mysqli_num_rows($reportList) : 0;
 } elseif ($isAdmin && !empty($filterBranch)) {
-    // Admin with branch filter
     $stmt = mysqli_prepare($con,
-        "SELECT id, asset_id, from_branch, to_branch, category, product, label_name, transfer_status, created_at, approved_at
-         FROM it_asset_transfers
+        "SELECT id, asset_id, from_branch, to_branch, category, product, company, label, amount, transfer_status, created_at, approved_at
+         FROM fixed_asset_transfers
          WHERE to_branch = ? AND transfer_status = 'Approved'
          ORDER BY approved_at DESC, id DESC"
     );
@@ -81,10 +71,9 @@ if ($isEmployee) {
     $reportList = mysqli_stmt_get_result($stmt);
     $totalCount = ($reportList) ? mysqli_num_rows($reportList) : 0;
 } elseif ($isAdmin) {
-    // Admin with no filter — show ALL approved
     $stmt = mysqli_prepare($con,
-        "SELECT id, asset_id, from_branch, to_branch, category, product, label_name, transfer_status, created_at, approved_at
-         FROM it_asset_transfers
+        "SELECT id, asset_id, from_branch, to_branch, category, product, company, label, amount, transfer_status, created_at, approved_at
+         FROM fixed_asset_transfers
          WHERE transfer_status = 'Approved'
          ORDER BY approved_at DESC, id DESC"
     );
@@ -100,8 +89,8 @@ if ($isEmployee) {
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>IT Asset Transfer Report | MPSC Bank Portal</title>
-    <meta name="description" content="View approved IT asset transfers and their final status in the MPSC Bank Portal." />
+    <title>Fixed Asset Transfer Report | MPSC Bank Portal</title>
+    <meta name="description" content="View approved fixed asset transfers in the MPSC Bank Portal." />
     <link href="./css/styles.css" rel="stylesheet" />
     <link href="./css/custom.css" rel="stylesheet" />
     <link href="./css/it-transfer.css?v=1" rel="stylesheet" />
@@ -114,7 +103,6 @@ if ($isEmployee) {
     <?php if ($isAdmin) { ?>
         <?php include_once('./includes/navbar.php'); ?>
     <?php } else { ?>
-        <!-- Employee Navbar (inline, same pattern as it-asset-transfer.php) -->
         <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background:#099c78;">
             <a class="navbar-brand ps-3" href="entry-forms.php">SDCC</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
@@ -154,18 +142,18 @@ if ($isEmployee) {
 
                             <!-- ── Back Link ── -->
                             <?php if ($isEmployee) { ?>
-                                <a href="manage-it-assets.php" class="itt-back-link">
-                                    <i class="fas fa-arrow-left"></i> Back to IT Assets Dashboard
+                                <a href="fixed-assets.php" class="itt-back-link">
+                                    <i class="fas fa-arrow-left"></i> Back to Fixed Assets Dashboard
                                 </a>
                             <?php } else { ?>
-                                <a href="it-asset-approval.php" class="itt-back-link">
+                                <a href="fixed-asset-approval.php" class="itt-back-link">
                                     <i class="fas fa-arrow-left"></i> Back to Transfer Approval
                                 </a>
                             <?php } ?>
 
                             <!-- ── PAGE HEADER ── -->
                             <div class="itt-header">
-                                <h1 class="itt-title"><i class="fas fa-file-alt"></i> IT ASSET TRANSFER REPORT</h1>
+                                <h1 class="itt-title"><i class="fas fa-file-alt"></i> FIXED ASSET TRANSFER REPORT</h1>
                                 <?php if ($isEmployee) { ?>
                                     <div class="itt-branch-badge">
                                         <i class="fas fa-building"></i>
@@ -176,7 +164,7 @@ if ($isEmployee) {
 
                             <?php if ($isAdmin) { ?>
                                 <!-- ── ADMIN BRANCH FILTER ── -->
-                                <form method="GET" action="it-asset-transfer-report.php" class="itt-filter-bar" id="reportFilterBar">
+                                <form method="GET" action="fixed-asset-transfer-report.php" class="itt-filter-bar" id="reportFilterBar">
                                     <label for="branchFilter">
                                         <i class="fas fa-building"></i> Filter by Branch:
                                     </label>
@@ -193,7 +181,7 @@ if ($isEmployee) {
                                         <i class="fas fa-search"></i> Filter
                                     </button>
                                     <?php if (!empty($filterBranch)) { ?>
-                                        <a href="it-asset-transfer-report.php" class="itr-clear-btn">
+                                        <a href="fixed-asset-transfer-report.php" class="itr-clear-btn">
                                             <i class="fas fa-times"></i> Clear
                                         </a>
                                     <?php } ?>
@@ -226,9 +214,9 @@ if ($isEmployee) {
 
                             <!-- ── REPORT TABLE ── -->
                             <div class="itt-table-wrap" id="printableArea">
-                                <!-- Print-only header (visible only when printing) -->
+                                <!-- Print-only header -->
                                 <div class="itr-print-header">
-                                    <h2>IT ASSET TRANSFER REPORT</h2>
+                                    <h2>FIXED ASSET TRANSFER REPORT</h2>
                                     <?php if (!empty($filterBranch)) { ?>
                                         <p>Branch: <?php echo htmlspecialchars($filterBranch); ?></p>
                                     <?php } ?>
@@ -238,7 +226,7 @@ if ($isEmployee) {
                                 <div class="itt-table-header-bar">
                                     <span>
                                         <i class="fas fa-file-alt"></i>
-                                        Approved Transfers
+                                        Approved Fixed Asset Transfers
                                         <?php if (!empty($filterBranch)) { ?>
                                             — <?php echo htmlspecialchars($filterBranch); ?>
                                         <?php } ?>
@@ -267,7 +255,9 @@ if ($isEmployee) {
                                                 <th>To Branch</th>
                                                 <th>Category</th>
                                                 <th>Product</th>
+                                                <th>Company</th>
                                                 <th>Label</th>
+                                                <th>Price</th>
                                                 <th>Received Date</th>
                                                 <th>Status</th>
                                             </tr>
@@ -294,7 +284,9 @@ if ($isEmployee) {
                                                         </td>
                                                         <td><?php echo htmlspecialchars($row['category']); ?></td>
                                                         <td><?php echo htmlspecialchars($row['product']); ?></td>
-                                                        <td><?php echo htmlspecialchars($row['label_name'] ?? '—'); ?></td>
+                                                        <td><?php echo htmlspecialchars($row['company'] ?? '—'); ?></td>
+                                                        <td><?php echo htmlspecialchars($row['label'] ?? '—'); ?></td>
+                                                        <td>₹<?php echo number_format((float)$row['amount'], 2); ?></td>
                                                         <td>
                                                             <?php
                                                             if (!empty($row['approved_at'])) {
@@ -315,9 +307,9 @@ if ($isEmployee) {
                                             } else {
                                             ?>
                                                 <tr>
-                                                    <td colspan="9" class="itt-empty-row">
+                                                    <td colspan="11" class="itt-empty-row">
                                                         <i class="fas fa-inbox"></i>
-                                                        No approved transfers found.
+                                                        No approved fixed asset transfers found.
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -326,7 +318,7 @@ if ($isEmployee) {
                                 </div>
                             </div>
 
-                            <!-- ── PRINT BUTTON (visible on both admin & employee) ── -->
+                            <!-- ── PRINT BUTTON ── -->
                             <?php if ($totalCount > 0) { ?>
                                 <div class="itr-print-action no-print">
                                     <button type="button" class="itr-print-main-btn" onclick="printReport()">
@@ -361,7 +353,6 @@ if ($isEmployee) {
             searchInput.addEventListener('input', function () {
                 const filter = this.value.toLowerCase().trim();
                 const rows = document.querySelectorAll('#reportTable tbody tr');
-
                 rows.forEach(row => {
                     if (row.querySelector('.itt-empty-row')) return;
                     const text = row.textContent.toLowerCase();

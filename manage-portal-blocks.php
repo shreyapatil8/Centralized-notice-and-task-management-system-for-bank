@@ -1,7 +1,35 @@
 <?php
 include_once('./includes/auth-admin.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
+
+// Handle delete action
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $delId = (int)$_GET['delete'];
+    // Get file info before deleting
+    $delStmt = mysqli_prepare($con, "SELECT file_name FROM portal_blocks WHERE id=?");
+    mysqli_stmt_bind_param($delStmt, "i", $delId);
+    mysqli_stmt_execute($delStmt);
+    $delResult = mysqli_stmt_get_result($delStmt);
+    $delRow = mysqli_fetch_assoc($delResult);
+    mysqli_stmt_close($delStmt);
+
+    if ($delRow) {
+        // Delete the uploaded file if it exists
+        if (!empty($delRow['file_name'])) {
+            $filePath = __DIR__ . '/uploads/portal-blocks/' . $delRow['file_name'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+        // Delete the record
+        $delStmt2 = mysqli_prepare($con, "DELETE FROM portal_blocks WHERE id=?");
+        mysqli_stmt_bind_param($delStmt2, "i", $delId);
+        mysqli_stmt_execute($delStmt2);
+        mysqli_stmt_close($delStmt2);
+    }
+    header("Location: manage-portal-blocks.php");
+    exit();
+}
 
 $query = mysqli_query($con, "SELECT * FROM portal_blocks WHERE is_active=1 ORDER BY display_order ASC, id ASC");
 ?>
@@ -33,6 +61,9 @@ $query = mysqli_query($con, "SELECT * FROM portal_blocks WHERE is_active=1 ORDER
 
                                 <div class="portal-blocks-top-row">
                                     <h2 class="portal-blocks-title">Portal Download Blocks</h2>
+                                    <a href="add-portal-block.php" class="pb-add-new-btn">
+                                        <i class="fas fa-plus"></i> Add New Block
+                                    </a>
                                 </div>
 
                                 <div class="portal-blocks-table-wrap">
@@ -71,8 +102,12 @@ $query = mysqli_query($con, "SELECT * FROM portal_blocks WHERE is_active=1 ORDER
                                                                         <i class="fas fa-upload"></i> Add File
                                                                     </a>
 
-                                                                    <a href="edit-portal-block.php?id=<?php echo (int)$row['id']; ?>" class="pb-action-btn">
+                                                                    <a href="edit-portal-blocks.php?id=<?php echo (int)$row['id']; ?>" class="pb-action-btn">
                                                                         <i class="fas fa-pen"></i> Edit File
+                                                                    </a>
+
+                                                                    <a href="manage-portal-blocks.php?delete=<?php echo (int)$row['id']; ?>" class="pb-delete-btn" onclick="return confirm('Are you sure you want to delete this block?');">
+                                                                        <i class="fas fa-trash"></i> Delete
                                                                     </a>
                                                                 </div>
                                                             </td>

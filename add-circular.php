@@ -49,9 +49,8 @@ if (isset($_POST['submit'])) {
                     exit();
                 } else {
                     $error = "Database error while saving circular.";
+                    mysqli_stmt_close($stmt);
                 }
-
-                mysqli_stmt_close($stmt);
             } else {
                 $error = "File upload failed. Please check folder permissions.";
             }

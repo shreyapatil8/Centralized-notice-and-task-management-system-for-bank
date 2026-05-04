@@ -1,11 +1,28 @@
 <?php
 /**
- * IT Asset Approval — Admin-only page
- * View and approve/reject pending transfer requests
+ * Fixed Asset Approval — Admin-only page
+ * View and approve/reject pending fixed asset transfer requests
  */
 
 include_once('./includes/auth-admin.php');
 include_once('./includes/config.php');
+
+// ─── Ensure fixed_asset_transfers table exists ───
+mysqli_query($con, "CREATE TABLE IF NOT EXISTS `fixed_asset_transfers` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `asset_id` INT NOT NULL,
+    `from_branch` VARCHAR(255) NOT NULL,
+    `to_branch` VARCHAR(255) NOT NULL,
+    `category` VARCHAR(100) NOT NULL,
+    `product` VARCHAR(255) NOT NULL,
+    `company` VARCHAR(255) DEFAULT NULL,
+    `label` VARCHAR(255) DEFAULT NULL,
+    `amount` DECIMAL(12,2) DEFAULT 0,
+    `status` VARCHAR(100) DEFAULT NULL,
+    `transfer_status` VARCHAR(50) DEFAULT 'Pending',
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `approved_at` DATETIME DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
 // ─── Branch list ───
 $branches = [
@@ -26,8 +43,8 @@ $pendingCount = 0;
 
 if (!empty($selectedBranch)) {
     $stmt = mysqli_prepare($con,
-        "SELECT id, asset_id, from_branch, to_branch, category, product, label_name, status, transfer_status, created_at
-         FROM it_asset_transfers
+        "SELECT id, asset_id, from_branch, to_branch, category, product, company, label, amount, status, transfer_status, created_at
+         FROM fixed_asset_transfers
          WHERE to_branch = ? AND transfer_status = 'Pending'
          ORDER BY created_at DESC"
     );
@@ -43,24 +60,21 @@ $statApproved = 0;
 $statRejected = 0;
 
 if (!empty($selectedBranch)) {
-    // Pending
-    $s1 = mysqli_prepare($con, "SELECT COUNT(*) as cnt FROM it_asset_transfers WHERE to_branch = ? AND transfer_status = 'Pending'");
+    $s1 = mysqli_prepare($con, "SELECT COUNT(*) as cnt FROM fixed_asset_transfers WHERE to_branch = ? AND transfer_status = 'Pending'");
     mysqli_stmt_bind_param($s1, "s", $selectedBranch);
     mysqli_stmt_execute($s1);
     $r1 = mysqli_stmt_get_result($s1);
     $statPending = mysqli_fetch_assoc($r1)['cnt'];
     mysqli_stmt_close($s1);
 
-    // Approved
-    $s2 = mysqli_prepare($con, "SELECT COUNT(*) as cnt FROM it_asset_transfers WHERE to_branch = ? AND transfer_status = 'Approved'");
+    $s2 = mysqli_prepare($con, "SELECT COUNT(*) as cnt FROM fixed_asset_transfers WHERE to_branch = ? AND transfer_status = 'Approved'");
     mysqli_stmt_bind_param($s2, "s", $selectedBranch);
     mysqli_stmt_execute($s2);
     $r2 = mysqli_stmt_get_result($s2);
     $statApproved = mysqli_fetch_assoc($r2)['cnt'];
     mysqli_stmt_close($s2);
 
-    // Rejected
-    $s3 = mysqli_prepare($con, "SELECT COUNT(*) as cnt FROM it_asset_transfers WHERE to_branch = ? AND transfer_status = 'Rejected'");
+    $s3 = mysqli_prepare($con, "SELECT COUNT(*) as cnt FROM fixed_asset_transfers WHERE to_branch = ? AND transfer_status = 'Rejected'");
     mysqli_stmt_bind_param($s3, "s", $selectedBranch);
     mysqli_stmt_execute($s3);
     $r3 = mysqli_stmt_get_result($s3);
@@ -72,8 +86,8 @@ if (!empty($selectedBranch)) {
 $success = '';
 $error = '';
 if (isset($_GET['msg'])) {
-    if ($_GET['msg'] === 'approved') $success = 'Transfer approved successfully! Asset branch has been updated.';
-    if ($_GET['msg'] === 'rejected') $success = 'Transfer request has been rejected.';
+    if ($_GET['msg'] === 'approved') $success = 'Fixed asset transfer approved successfully! Asset branch has been updated.';
+    if ($_GET['msg'] === 'rejected') $success = 'Fixed asset transfer request has been rejected.';
     if ($_GET['msg'] === 'error') $error = 'An error occurred. Please try again.';
     if ($_GET['msg'] === 'invalid') $error = 'Invalid transfer request.';
 }
@@ -85,7 +99,7 @@ if (isset($_GET['msg'])) {
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>IT Asset Transfer Approval | MPSC Bank Portal</title>
+    <title>Fixed Asset Transfer Approval | MPSC Bank Portal</title>
     <link href="./css/styles.css" rel="stylesheet" />
     <link href="./css/custom.css" rel="stylesheet" />
     <link href="./css/it-transfer.css?v=1" rel="stylesheet" />
@@ -106,7 +120,7 @@ if (isset($_GET['msg'])) {
 
                             <!-- ── PAGE HEADER ── -->
                             <div class="itt-header">
-                                <h1 class="itt-title"><i class="fas fa-clipboard-check"></i> IT ASSET TRANSFER APPROVAL</h1>
+                                <h1 class="itt-title"><i class="fas fa-clipboard-check"></i> FIXED ASSET TRANSFER APPROVAL</h1>
                             </div>
 
                             <?php if (!empty($success)) { ?>
@@ -122,7 +136,7 @@ if (isset($_GET['msg'])) {
                             <?php } ?>
 
                             <!-- ── BRANCH FILTER ── -->
-                            <form method="GET" action="it-asset-approval.php" class="itt-filter-bar">
+                            <form method="GET" action="fixed-asset-approval.php" class="itt-filter-bar">
                                 <label for="branchFilter">
                                     <i class="fas fa-building"></i> Select Branch:
                                 </label>
@@ -145,27 +159,21 @@ if (isset($_GET['msg'])) {
                                 <!-- ── STATS ROW ── -->
                                 <div class="itt-stats-row">
                                     <div class="itt-stat-card">
-                                        <div class="itt-stat-icon pending">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
+                                        <div class="itt-stat-icon pending"><i class="fas fa-clock"></i></div>
                                         <div class="itt-stat-info">
                                             <div class="itt-stat-label">Pending</div>
                                             <div class="itt-stat-count"><?php echo $statPending; ?></div>
                                         </div>
                                     </div>
                                     <div class="itt-stat-card">
-                                        <div class="itt-stat-icon approved">
-                                            <i class="fas fa-check"></i>
-                                        </div>
+                                        <div class="itt-stat-icon approved"><i class="fas fa-check"></i></div>
                                         <div class="itt-stat-info">
                                             <div class="itt-stat-label">Approved</div>
                                             <div class="itt-stat-count"><?php echo $statApproved; ?></div>
                                         </div>
                                     </div>
                                     <div class="itt-stat-card">
-                                        <div class="itt-stat-icon rejected">
-                                            <i class="fas fa-times"></i>
-                                        </div>
+                                        <div class="itt-stat-icon rejected"><i class="fas fa-times"></i></div>
                                         <div class="itt-stat-info">
                                             <div class="itt-stat-label">Rejected</div>
                                             <div class="itt-stat-count"><?php echo $statRejected; ?></div>
@@ -187,7 +195,9 @@ if (isset($_GET['msg'])) {
                                                     <th>Date</th>
                                                     <th>Category</th>
                                                     <th>Product</th>
+                                                    <th>Company</th>
                                                     <th>Label</th>
+                                                    <th>Price</th>
                                                     <th>Status</th>
                                                     <th>From Branch</th>
                                                     <th class="no-print">Action</th>
@@ -205,7 +215,9 @@ if (isset($_GET['msg'])) {
                                                             <td><?php echo date('d-M-Y', strtotime($transfer['created_at'])); ?></td>
                                                             <td><?php echo htmlspecialchars($transfer['category']); ?></td>
                                                             <td><?php echo htmlspecialchars($transfer['product']); ?></td>
-                                                            <td><?php echo htmlspecialchars($transfer['label_name'] ?? '—'); ?></td>
+                                                            <td><?php echo htmlspecialchars($transfer['company'] ?? '—'); ?></td>
+                                                            <td><?php echo htmlspecialchars($transfer['label'] ?? '—'); ?></td>
+                                                            <td>₹<?php echo number_format((float)$transfer['amount'], 2); ?></td>
                                                             <td>
                                                                 <span class="itt-status-badge status-pending">
                                                                     <?php echo htmlspecialchars($transfer['transfer_status']); ?>
@@ -239,8 +251,8 @@ if (isset($_GET['msg'])) {
                                                 } else {
                                                 ?>
                                                     <tr>
-                                                        <td colspan="8" class="itt-empty-row">
-                                                            <i class="fas fa-inbox"></i> No pending transfer requests for this branch.
+                                                        <td colspan="10" class="itt-empty-row">
+                                                            <i class="fas fa-inbox"></i> No pending fixed asset transfer requests for this branch.
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
@@ -251,7 +263,7 @@ if (isset($_GET['msg'])) {
 
                             <?php } else { ?>
                                 <div class="itt-alert-warning">
-                                    <i class="fas fa-info-circle"></i> Please select a branch to view pending transfer requests.
+                                    <i class="fas fa-info-circle"></i> Please select a branch to view pending fixed asset transfer requests.
                                 </div>
                             <?php } ?>
 
@@ -272,11 +284,11 @@ if (isset($_GET['msg'])) {
             </div>
             <div class="itt-modal-title">Approve Transfer</div>
             <div class="itt-modal-text" id="approveModalText">
-                Are you sure you want to approve this transfer?
+                Are you sure you want to approve this fixed asset transfer?
             </div>
             <div class="itt-modal-actions">
                 <button class="itt-modal-btn-cancel" id="approveCancelBtn">Cancel</button>
-                <form method="POST" action="approve-transfer.php" id="approveForm" style="display:inline;">
+                <form method="POST" action="approve-fixed-transfer.php" id="approveForm" style="display:inline;">
                     <input type="hidden" name="transfer_id" id="approveTransferId">
                     <input type="hidden" name="asset_id" id="approveAssetId">
                     <input type="hidden" name="action" value="approve">
@@ -295,11 +307,11 @@ if (isset($_GET['msg'])) {
             </div>
             <div class="itt-modal-title">Reject Transfer</div>
             <div class="itt-modal-text" id="rejectModalText">
-                Are you sure you want to reject this transfer?
+                Are you sure you want to reject this fixed asset transfer?
             </div>
             <div class="itt-modal-actions">
                 <button class="itt-modal-btn-cancel" id="rejectCancelBtn">Cancel</button>
-                <form method="POST" action="approve-transfer.php" id="rejectForm" style="display:inline;">
+                <form method="POST" action="approve-fixed-transfer.php" id="rejectForm" style="display:inline;">
                     <input type="hidden" name="transfer_id" id="rejectTransferId">
                     <input type="hidden" name="action" value="reject">
                     <input type="hidden" name="branch" id="rejectBranch" value="<?php echo htmlspecialchars($selectedBranch); ?>">
@@ -353,12 +365,9 @@ if (isset($_GET['msg'])) {
             document.getElementById('rejectModal').classList.remove('active');
         });
 
-        // Close on overlay click
         ['approveModal', 'rejectModal'].forEach(modalId => {
             document.getElementById(modalId).addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.classList.remove('active');
-                }
+                if (e.target === this) this.classList.remove('active');
             });
         });
 

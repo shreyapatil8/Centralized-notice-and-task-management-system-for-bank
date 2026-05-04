@@ -1,7 +1,6 @@
 <?php
 include_once('./includes/auth-admin.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 $query = mysqli_query($con, "SELECT * FROM portal_policies WHERE is_active=1 ORDER BY id ASC");
 ?>

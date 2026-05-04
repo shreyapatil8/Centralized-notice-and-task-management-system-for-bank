@@ -1,7 +1,6 @@
 <?php
 include_once('./includes/auth-employee.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 $branch = $_SESSION['branch_name'];
 
@@ -180,6 +179,12 @@ if (isset($_GET['msg'])) {
                                                             break;
                                                         case 'Not Available':
                                                             $statusClass = 'status-unavailable';
+                                                            break;
+                                                        case 'Pending Transfer':
+                                                            $statusClass = 'status-pending-transfer';
+                                                            break;
+                                                        case 'Transferred':
+                                                            $statusClass = 'status-transferred';
                                                             break;
                                                         case 'Send To Repair':
                                                             $statusClass = 'status-repair';

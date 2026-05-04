@@ -71,9 +71,8 @@ if (isset($_POST['submit'])) {
                 exit();
             } else {
                 $error = "Database error while updating news.";
+                mysqli_stmt_close($stmt);
             }
-
-            mysqli_stmt_close($stmt);
         }
     }
 }

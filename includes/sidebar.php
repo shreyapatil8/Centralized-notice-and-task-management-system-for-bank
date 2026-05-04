@@ -37,7 +37,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     View Portal
                 </a>
 
-                <a class="nav-link <?php echo ($current_page == 'inward.php') ? 'active' : ''; ?>"
+                <a class="nav-link <?php echo in_array($current_page, ['manage-inward.php', 'add-inward.php', 'edit-inward.php']) ? 'active' : ''; ?>"
                     href="manage-inward.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
                     Inward
@@ -50,7 +50,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 </a>
 
                 <?php
-                    $itAssetPages = ['it-assets.php', 'it-asset-approval.php', 'it-asset-transfer-report.php'];
+                    $itAssetPages = ['it-asset-approval.php', 'it-asset-transfer-report.php'];
                     $itAssetOpen = in_array($current_page, $itAssetPages);
                 ?>
                 <a class="nav-link <?php echo $itAssetOpen ? '' : 'collapsed'; ?>" href="#" data-bs-toggle="collapse"
@@ -74,7 +74,38 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     </nav>
                 </div>
 
-                <a class="nav-link <?php echo in_array($current_page, ['manage-portal-blocks.php', 'edit-portal-block.php']) ? 'active' : ''; ?>"
+                <?php
+                    $fixedAssetPages = ['fixed-asset-approval.php', 'fixed-asset-transfer-report.php'];
+                    $fixedAssetOpen = in_array($current_page, $fixedAssetPages);
+                ?>
+                <a class="nav-link <?php echo $fixedAssetOpen ? '' : 'collapsed'; ?>" href="#" data-bs-toggle="collapse"
+                    data-bs-target="#collapseFixedAssets" aria-expanded="<?php echo $fixedAssetOpen ? 'true' : 'false'; ?>"
+                    aria-controls="collapseFixedAssets">
+                    <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                    Fixed Assets
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse <?php echo $fixedAssetOpen ? 'show' : ''; ?>" id="collapseFixedAssets"
+                    data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link <?php echo ($current_page == 'fixed-asset-approval.php') ? 'active' : ''; ?>"
+                            href="fixed-asset-approval.php">
+                            <i class="fas fa-clipboard-check me-2"></i> Fixed Asset Transfer Approval
+                        </a>
+                        <a class="nav-link <?php echo ($current_page == 'fixed-asset-transfer-report.php') ? 'active' : ''; ?>"
+                            href="fixed-asset-transfer-report.php">
+                            <i class="fas fa-file-alt me-2"></i> Fixed Asset Transfer Report
+                        </a>
+                    </nav>
+                </div>
+
+                <a class="nav-link <?php echo in_array($current_page, ['manage-users.php', 'add-profile.php', 'edit-profile.php', 'user-profile.php']) ? 'active' : ''; ?>"
+                    href="manage-users.php">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Manage Users
+                </a>
+
+                <a class="nav-link <?php echo in_array($current_page, ['manage-portal-blocks.php', 'edit-portal-blocks.php', 'add-portal-block.php', 'add-portal-block-file.php']) ? 'active' : ''; ?>"
                     href="manage-portal-blocks.php">
                     <div class="sb-nav-link-icon"><i class="fas fa-download"></i></div>
                     Portal Downloads

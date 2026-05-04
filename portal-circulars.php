@@ -1,7 +1,6 @@
 <?php
 include_once('./includes/auth-portal.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 $dept = isset($_GET['dept']) ? trim($_GET['dept']) : 'all';
 $year = isset($_GET['year']) ? trim($_GET['year']) : 'all';
@@ -77,10 +76,10 @@ function buildFilterLink($dept, $year) {
     </div>
 
     <div class="portal-menu-bar">
-        <a href="manage-circulars.php">होम</a>
-        <a href="#">वेबसाईट</a>
-        <a href="#">एंट्री फॉर्म / रिपोर्ट</a>
-        <a href="index.php" class="portal-menu-right">लॉग आउट</a>
+        <a href="web-main.php">होम</a>
+        <a href="https://share.google/v0sGI322DcU2pWU9D" target="_blank">वेबसाईट</a>
+        <a href="<?php echo (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') ? 'manage-circulars.php' : 'entry-forms.php'; ?>">एंट्री फॉर्म / रिपोर्ट</a>
+        <a href="logout.php" class="portal-menu-right">लॉग आउट</a>
     </div>
 
     <div class="portal-main">

@@ -32,17 +32,14 @@ if (isset($_POST['submit'])) {
             mysqli_stmt_bind_param($stmt, "isss", $inward_no, $letter_date, $inward_from, $details);
 
             if (mysqli_stmt_execute($stmt)) {
-
                 mysqli_stmt_close($stmt);
                 mysqli_stmt_close($checkStmt);
-
                 header("Location: manage-inward.php");
                 exit();
             } else {
                 $error = "Database error while saving inward entry.";
+                mysqli_stmt_close($stmt);
             }
-
-            mysqli_stmt_close($stmt);
         }
 
         mysqli_stmt_close($checkStmt);

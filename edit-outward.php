@@ -62,9 +62,8 @@ if (isset($_POST['submit'])) {
                 exit();
             } else {
                 $error = "Something went wrong while updating outward entry.";
+                mysqli_stmt_close($stmt);
             }
-
-            mysqli_stmt_close($stmt);
         }
 
         mysqli_stmt_close($checkStmt);

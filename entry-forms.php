@@ -1,7 +1,6 @@
 <?php
 include_once('./includes/auth-portal.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 ?>
 <!DOCTYPE html>
 <html lang="en">

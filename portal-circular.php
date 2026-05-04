@@ -1,6 +1,6 @@
 <?php
+include_once('./includes/auth-portal.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("Invalid circular.");

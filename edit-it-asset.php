@@ -1,7 +1,6 @@
 <?php
 include_once('./includes/auth-employee.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 $branch = $_SESSION['branch_name'];
 

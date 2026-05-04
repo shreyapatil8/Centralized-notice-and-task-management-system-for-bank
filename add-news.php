@@ -41,9 +41,8 @@ if (isset($_POST['submit'])) {
                     exit();
                 } else {
                     $error = "Database error while saving news.";
+                    mysqli_stmt_close($stmt);
                 }
-
-                mysqli_stmt_close($stmt);
             } else {
                 $error = "Failed to upload image.";
             }

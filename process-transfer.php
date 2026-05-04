@@ -4,12 +4,10 @@
  * Inserts selected assets into it_asset_transfers table
  * Does NOT modify the original it_assets table
  */
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+
 
 include_once('./includes/auth-employee.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 // Only accept POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -135,6 +133,16 @@ try {
             error_log("Failed to execute INSERT: " . mysqli_stmt_error($insertStmt));
         } else {
             $transferredCount++;
+
+            // Update original asset status to 'Pending Transfer'
+            $updateStatus = mysqli_prepare($con,
+                "UPDATE it_assets SET status = 'Pending Transfer' WHERE id = ?"
+            );
+            if ($updateStatus) {
+                mysqli_stmt_bind_param($updateStatus, "i", $assetId);
+                mysqli_stmt_execute($updateStatus);
+                mysqli_stmt_close($updateStatus);
+            }
         }
 
         mysqli_stmt_close($insertStmt);

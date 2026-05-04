@@ -1,7 +1,6 @@
 <?php
 include_once('./includes/auth-employee.php');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
 
 $branch = $_SESSION['branch_name'];
 
@@ -123,7 +122,7 @@ if (isset($_GET['msg'])) {
 
 // Dropdown options
 $categoryOptions = ['Dead Stock', 'Furniture', 'Machinery', 'Vehicle'];
-$statusOptions   = ['Available', 'Request to Delete', 'Scrap', 'Request to Sale', 'Request to Repair'];
+$statusOptions   = ['Available', 'Pending Transfer', 'Transferred', 'Request to Delete', 'Scrap', 'Request to Sale', 'Request to Repair'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -300,6 +299,12 @@ $statusOptions   = ['Available', 'Request to Delete', 'Scrap', 'Request to Sale'
                                                     switch ($asset['status']) {
                                                         case 'Available':
                                                             $statusClass = 'fa-status-available';
+                                                            break;
+                                                        case 'Pending Transfer':
+                                                            $statusClass = 'fa-status-pending-transfer';
+                                                            break;
+                                                        case 'Transferred':
+                                                            $statusClass = 'fa-status-transferred';
                                                             break;
                                                         case 'Request to Delete':
                                                             $statusClass = 'fa-status-request-delete';

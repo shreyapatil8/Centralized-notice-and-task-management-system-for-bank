@@ -431,6 +431,16 @@ html, body {
     transform: scale(1.03);
 }
 
+.portal-click-disabled {
+    animation: none !important;
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    font-size: 12px;
+    font-weight: 500;
+    font-style: italic;
+}
+
 @keyframes liveClickBlink {
     0% { opacity: 0.3; }
     50% { opacity: 1; }

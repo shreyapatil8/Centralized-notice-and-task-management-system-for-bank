@@ -2,42 +2,68 @@
 session_start();
 date_default_timezone_set('Asia/Kolkata');
 include_once('./includes/config.php');
-mysqli_set_charset($con, "utf8mb4");
+include_once('./includes/security.php');
 
 $error = '';
 
 if (isset($_POST['login'])) {
     $username = trim($_POST['username']);
-    $password = md5(trim($_POST['password']));
+    $rawPassword = trim($_POST['password']);
 
-    if ($username === '' || trim($_POST['password']) === '') {
+    if ($username === '' || $rawPassword === '') {
         $error = "Please enter username and password.";
     } else {
-        $stmt = mysqli_prepare($con, "SELECT id, username, role, branch_name FROM users WHERE username=? AND password=? AND is_active=1 LIMIT 1");
-        mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+        $stmt = mysqli_prepare($con, "SELECT id, username, password, role, branch_name FROM users WHERE username=? AND is_active=1 LIMIT 1");
+        mysqli_stmt_bind_param($stmt, "s", $username);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $user = mysqli_fetch_assoc($result);
         mysqli_stmt_close($stmt);
 
         if ($user) {
-            $role = trim(strtolower($user['role']));
+            $storedPassword = $user['password'];
+            $authenticated = false;
 
-            $_SESSION['userid'] = $user['id'];
-            $_SESSION['login'] = $user['username'];
-            $_SESSION['role'] = $role;
-            $_SESSION['branch_name'] = $user['branch_name'];
+            // Check if password is stored with password_hash (bcrypt)
+            if (password_verify($rawPassword, $storedPassword)) {
+                $authenticated = true;
+            }
+            // Backward compatibility: check MD5 hash
+            elseif ($storedPassword === md5($rawPassword)) {
+                $authenticated = true;
 
-            if ($role === 'admin') {
-                $_SESSION['adminid'] = $user['id'];
-                header("Location: manage-circulars.php");
-                exit();
-            } elseif ($role === 'employee') {
-                unset($_SESSION['adminid']);
-                header("Location: web-main.php");
-                exit();
+                // Auto-migrate MD5 to bcrypt
+                $newHash = password_hash($rawPassword, PASSWORD_BCRYPT);
+                $upgradeStmt = mysqli_prepare($con, "UPDATE users SET password=? WHERE id=?");
+                mysqli_stmt_bind_param($upgradeStmt, "si", $newHash, $user['id']);
+                mysqli_stmt_execute($upgradeStmt);
+                mysqli_stmt_close($upgradeStmt);
+            }
+
+            if ($authenticated) {
+                $role = trim(strtolower($user['role']));
+
+                // Regenerate session ID to prevent session fixation
+                session_regenerate_id(true);
+
+                $_SESSION['userid'] = $user['id'];
+                $_SESSION['login'] = $user['username'];
+                $_SESSION['role'] = $role;
+                $_SESSION['branch_name'] = $user['branch_name'];
+
+                if ($role === 'admin') {
+                    $_SESSION['adminid'] = $user['id'];
+                    header("Location: manage-circulars.php");
+                    exit();
+                } elseif ($role === 'employee') {
+                    unset($_SESSION['adminid']);
+                    header("Location: web-main.php");
+                    exit();
+                } else {
+                    $error = "Invalid role assigned to this user.";
+                }
             } else {
-                $error = "Invalid role assigned to this user: " . htmlspecialchars($user['role']);
+                $error = "Invalid username or password.";
             }
         } else {
             $error = "Invalid username or password.";
@@ -124,7 +150,6 @@ if (isset($_POST['login'])) {
                         </div>
 
                         <div class="portal-login-actions">
-                            <a href="#" class="portal-forgot-link">Forget password?</a>
                             <button class="portal-signin-btn" name="login" type="submit">SIGN IN</button>
                         </div>
                     </form>
